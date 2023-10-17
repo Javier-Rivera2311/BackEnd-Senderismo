@@ -65,8 +65,8 @@ const getUsuarios = async ( req, res ) => {
     try {
         
         const connection = await createConnection();
-        console.log("djaskhdjkashd")
-        const [rows] = await connection.execute('SELECT * from usuario');
+        console.log("JSAH")
+        const [rows] = await connection.execute('SELECT FROM usuarios nombre, correo');
         await connection.end();
 
         return res.status(200).json({
@@ -82,12 +82,12 @@ const getUsuarios = async ( req, res ) => {
         });
     }
 }
-const getUsuariosid = async ( req, res ) => {
+const setUsuario = async ( req, res ) => {
     try {
         
         const connection = await createConnection();
-        console.log("djaskhdjkashd")
-        const [rows] = await connection.execute('SELECT * from usuario where id = ?', [req.params.id]);
+        console.log("JSAH")
+        const [rows] = await connection.execute('Insert into usuarios (nombre, correo) values (?, ?)', [req.body.nombre, req.body.correo] );
         await connection.end();
 
         return res.status(200).json({
@@ -98,12 +98,11 @@ const getUsuariosid = async ( req, res ) => {
     } catch (error) {
         return res.status(500).json({
             status: false,
-            error: "Problemas al traer el usuarios",
+            error: "Problemas al ingresar usuarios",
             code: error
         });
     }
 }
-
 /* The `export` statement is used to export functions, objects, or values from a module so that they
 can be imported and used in other modules. In this case, the `export` statement is exporting the
 `getUsuarios` and `crearUsuario` functions from the current module. This allows other modules to
@@ -111,5 +110,5 @@ import and use these functions. */
 export {
     getUsuarios,
     crearUsuario,
-    getUsuariosid
+    setUsuario,
 }
