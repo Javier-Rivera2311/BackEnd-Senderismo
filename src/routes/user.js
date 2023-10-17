@@ -9,8 +9,12 @@ import { crearUsuario, getUsuarios } from '../controllers/user.js';
 
 export default router;
 
+
 router.route('ingresar/Usuarios')
     .post( setUsuario );
-
 router.route('Mostrar/Usuarios')
     .get( getUsuarios );
+route.route('Crear/Usuarios')
+    .get( crearUsuario );
+route.route('Login/Usuarios')
+    .get( login );
