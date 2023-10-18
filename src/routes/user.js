@@ -2,24 +2,19 @@
 defines two routes: */
 import { Router } from 'express';
 
-import { crearUsuario, getUsuarios, getUsuariosid } from '../controllers/user.js';
+import { crearUsuario, getUsuarios } from '../controllers/user.js';
 
-/* `const router = Router();` is creating a new router object using the `Router` class from the
-`express` module. This router object will be used to define routes and handle HTTP requests. */
-const router = Router();
 
-/* `router.route('/create').post(crearUsuario)` is defining a route for the HTTP POST method on the
-'/create' endpoint. */
-router.route('/create')
-    .post(crearUsuario);
 
-/* `router.route('/get-all').get(getUsuarios)` is defining a route for the HTTP GET method on the
-'/get-all' endpoint. This means that when a GET request is made to the '/get-all' endpoint, the
-`getUsuarios` function will be called to handle the request. */
-router.route('/get-all')
-    .get( getUsuarios );
-
-router.route('/get-by-id/:id')
-    .get( getUsuariosid );
 
 export default router;
+
+
+router.route('ingresar/Usuarios')
+    .post( setUsuario );
+router.route('Mostrar/Usuarios')
+    .get( getUsuarios );
+route.route('Crear/Usuarios')
+    .get( crearUsuario );
+route.route('Login/Usuarios')
+    .get( login );
