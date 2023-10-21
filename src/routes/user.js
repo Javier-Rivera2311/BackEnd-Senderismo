@@ -2,7 +2,7 @@
 defines two routes: */
 import { Router } from 'express';
 
-import { crearUsuario, getUsuarios } from '../controllers/user.js';
+import { crearUsuario, getUsuarios,setUsuario,login } from '../controllers/user.js';
 
 
 

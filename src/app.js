@@ -1,17 +1,14 @@
-/* The code you provided is setting up an Express.js server with various middleware and configurations. */
+
 import cors from 'cors';
 import path from 'path';
 import morgan from 'morgan';
 import express from 'express';
-
 import value from './const/const.js';
 //archivo de la confiraciaona de bd 
 import './database/connection.js'
 const app = express(); //crear instancia app
 
-/* The `corsOptions` object is a configuration object for the CORS (Cross-Origin Resource Sharing)
-middleware. CORS is a mechanism that allows resources (e.g., fonts, JavaScript, etc.) on a web page
-to be requested from another domain outside the domain from which the resource originated. */
+
 const corsOptions = {
     credentiasl: true,
     optionSuccessStatus:200,
