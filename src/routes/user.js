@@ -2,19 +2,20 @@
 defines two routes: */
 import { Router } from 'express';
 
-import { crearUsuario, getUsuarios,setUsuario,login } from '../controllers/user.js';
+import { getUsuarios, setUsuario, login } from '../controllers/user.js';
 
+
+const router = Router();
+
+router.route('/ingresar')
+    .post(setUsuario);
+
+router.route('/mostrar')
+    .get(getUsuarios);
+
+router.route('/login')
+    .get(login);
 
 
 
 export default router;
-
-
-router.route('ingresar/Usuarios')
-    .post( setUsuario );
-router.route('Mostrar/Usuarios')
-    .get( getUsuarios );
-route.route('Crear/Usuarios')
-    .get( crearUsuario );
-route.route('Login/Usuarios')
-    .get( login );
