@@ -1,17 +1,14 @@
-/* The code you provided is setting up an Express.js server with various middleware and configurations. */
+
 import cors from 'cors';
 import path from 'path';
 import morgan from 'morgan';
 import express from 'express';
-
 import value from './const/const.js';
 //archivo de la confiraciaona de bd 
 import './database/connection.js'
 const app = express(); //crear instancia app
 
-/* The `corsOptions` object is a configuration object for the CORS (Cross-Origin Resource Sharing)
-middleware. CORS is a mechanism that allows resources (e.g., fonts, JavaScript, etc.) on a web page
-to be requested from another domain outside the domain from which the resource originated. */
+
 const corsOptions = {
     credentiasl: true,
     optionSuccessStatus:200,
@@ -41,10 +38,12 @@ app.use(express.static(path.join(path.resolve(), value.STATIC_PATH)));
 
 //ENDPOINTs
 import routerUser from './routes/user.js';
+//import routerRutas from './routes/rutas.js';
 
 /* `app.use('/user', routerUser)` is setting up a middleware for the Express.js application. It
 specifies that any requests with a URL starting with '/user' should be handled by the `routerUser`
 router. */
 app.use('/user', routerUser);
+//app.use('/rutas', routerRutas);
 
 export default app
