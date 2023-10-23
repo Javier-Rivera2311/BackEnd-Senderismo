@@ -1,6 +1,6 @@
 import mysql2 from 'mysql2/promise';
 import connectionConfig from '../database/connection.js';
-
+import bcrypt from 'bcrypt';
 
 const createConnection = async ( ) => {
     return await mysql2.createConnection(connectionConfig);
@@ -31,27 +31,41 @@ const getUsuarios = async ( req, res ) => {
     }
 };
 
-const setUsuario = async ( req, res ) => {
+const setUsuario = async (req, res) => {
     try {
-        const usuario = req.body; //en el cuerpo de la solicitud vamos a enviar data  'POST PUT'
-        const connection = await createConnection();
-        console.log("JSAH")
-        const [rows] = await connection.execute('INSERT INTO usuarios (ID,nombre,edad,numcontacto,correo,contraseña,) values (?,?,?,?,?,?)', [req.body.ID, req.body.nombre,req.body.edad,req.body.numcontacto,req.body.correo,req.body.contraseña] );
+      const { name, email, password } = req.body;
+  
+      // Verificar si el correo electrónico ya existe en la base de datos
+      const connection = await createConnection();
+      const [rows] = await connection.execute('SELECT * FROM login WHERE email = ?', [email]);
+      if (rows.length > 0) {
         await connection.end();
-
-        return res.status(200).json({
-            success: true,
-            usuarios: rows
+        return res.status(400).json({
+          success: false,
+          error: 'El correo electrónico ya está registrado'
         });
-
+      }
+  
+      // Cifrar la contraseña antes de almacenarla en la base de datos
+      const hashedPassword = await bcrypt.hash(password, 10);
+  
+      // Insertar el nuevo registro en la base de datos
+      const [insertResult] = await connection.execute('INSERT INTO login (name, email, password) VALUES (?, ?, ?)', [name, email, hashedPassword]);
+      await connection.end();
+  
+      return res.status(200).json({
+        success: true,
+        usuarios: insertResult
+      });
+  
     } catch (error) {
-        return res.status(500).json({
-            status: false,
-            error: "Problemas al ingresar usuarios",
-            code: error
-        });
+      return res.status(500).json({
+        status: false,
+        error: 'Problemas al ingresar usuarios',
+        code: error
+      });
     }
-};
+  };
 
 const login = async ( req, res ) => {
     try {
