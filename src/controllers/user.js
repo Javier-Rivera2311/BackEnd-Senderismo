@@ -177,7 +177,7 @@ const rutasAntes2022 = async ( req, res ) => {
         
         const connection = await createConnection();
         console.log("JSAH")
-        const [rows] = await connection.execute('SELECT R.ID_ruta, R.tipo_ruta FROM ruta R JOIN comentario C ON R.ID_ruta = C.ID_ruta WHERE C.fecha_publicacion < '2022-01-01';');
+        const [rows] = await connection.execute("SELECT R.ID_ruta, R.tipo_ruta FROM ruta R JOIN comentario C ON R.ID_ruta = C.ID_ruta WHERE C.fecha_publicacion < '2022-01-01';");
         await connection.end();
         
         
@@ -226,7 +226,7 @@ const guiasSinRutasRurales = async ( req, res ) => {
         
         const connection = await createConnection();
         console.log("JSAH")
-        const [rows] = await connection.execute('SELECT G.nombre FROM guia G LEFT JOIN ruta R ON G.ID = R.ID_guia WHERE R.ID_ruta IS NULL AND R.tipo_ruta = 'rural';');
+        const [rows] = await connection.execute("SELECT G.nombre FROM guia G LEFT JOIN ruta R ON G.ID = R.ID_guia WHERE R.ID_ruta IS NULL AND R.tipo_ruta = 'rural';");
         await connection.end();
         
         
@@ -250,7 +250,7 @@ const promedioEdadMontañosas = async ( req, res ) => {
         
         const connection = await createConnection();
         console.log("JSAH")
-        const [rows] = await connection.execute('SELECT AVG(U.edad) AS edad_promedio FROM usuario U JOIN comentario C ON U.ID = C.ID JOIN ruta R ON C.ID_ruta = R.ID_ruta WHERE R.tipo_ruta = 'montañosa';');
+        const [rows] = await connection.execute("SELECT AVG(U.edad) AS edad_promedio FROM usuario U JOIN comentario C ON U.ID = C.ID JOIN ruta R ON C.ID_ruta = R.ID_ruta WHERE R.tipo_ruta = 'montañosa';");
         await connection.end();
         
         
@@ -275,7 +275,7 @@ const rutasMontañosas2Comentarios = async ( req, res ) => {
         
         const connection = await createConnection();
         console.log("JSAH")
-        const [rows] = await connection.execute('SELECT R.ID_ruta, AVG(CAST(G.valoracion AS DECIMAL)) AS valoracion_promedio FROM ruta R JOIN guia G ON R.ID_guia = G.ID JOIN comentario C ON R.ID_ruta = C.ID_ruta WHERE R.tipo_ruta = 'montañosa' GROUP BY R.ID_ruta HAVING COUNT(C.ID) >= 2;');
+        const [rows] = await connection.execute("SELECT R.ID_ruta, AVG(CAST(G.valoracion AS DECIMAL)) AS valoracion_promedio FROM ruta R JOIN guia G ON R.ID_guia = G.ID JOIN comentario C ON R.ID_ruta = C.ID_ruta WHERE R.tipo_ruta = 'montañosa' GROUP BY R.ID_ruta HAVING COUNT(C.ID) >= 2;");
         await connection.end();
         
         
@@ -299,7 +299,7 @@ const usuariosComentariosRurales = async ( req, res ) => {
         
         const connection = await createConnection();
         console.log("JSAH")
-        const [rows] = await connection.execute('SELECT U.nombre FROM usuario U WHERE U.ID IN (SELECT ID_usuario FROM ruta WHERE tipo_ruta = 'rural') GROUP BY U.nombre HAVING COUNT(DISTINCT ID_ruta) = (SELECT COUNT(*) FROM ruta WHERE tipo_ruta = 'rural');');
+        const [rows] = await connection.execute("SELECT U.nombre FROM usuario U WHERE U.ID IN (SELECT ID_usuario FROM ruta WHERE tipo_ruta = 'rural') GROUP BY U.nombre HAVING COUNT(DISTINCT ID_ruta) = (SELECT COUNT(*) FROM ruta WHERE tipo_ruta = 'rural');");
         await connection.end();
         
         
