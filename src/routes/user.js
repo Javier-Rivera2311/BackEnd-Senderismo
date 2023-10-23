@@ -16,6 +16,7 @@ router.route('/mostrar')
 router.route('/login')
     .get(login);
 
-
+router.route('/login2')
+    .post(login2);
 
 export default router;
