@@ -332,34 +332,43 @@ const usuariosComentariosRurales = async ( req, res ) => {
 }
 
 /* Ruta que me pidio el Javier para validar el login*/
-const login2 = async ( req, res ) => {
+const login2 = async (req, res) => {
     try {
-        const { email, password } = req.body;
-        
-        const connection = await createConnection();
-        const [rows] = await connection.execute('SELECT * FROM login WHERE email = ? AND password = ?', [email, password]);
-        await connection.end();
-
-        if (rows.length === 1) {
-            return res.status(200).json({
-                success: true,
-                message: "Inicio de sesión exitoso"
-            });
+      const { email, password } = req.body;
+  
+      const connection = await createConnection();
+      const [rows] = await connection.execute('SELECT * FROM login WHERE email = ?', [email]);
+      await connection.end();
+  
+      if (rows.length === 1) {
+        const user = rows[0];
+        const passwordMatch = await bcrypt.compare(password, user.password);
+  
+        if (passwordMatch) {
+          return res.status(200).json({
+            success: true,
+            message: "Inicio de sesión exitoso"
+          });
         } else {
-            return res.status(401).json({
-                success: false,
-                error: "Correo electrónico o contraseña incorrectos"
-            });
+          return res.status(401).json({
+            success: false,
+            error: "Correo electrónico o contraseña incorrectos"
+          });
         }
-
-    } catch (error) {
-        return res.status(500).json({
-            status: false,
-            error: "Problemas al iniciar sesión",
-            code: error
+      } else {
+        return res.status(401).json({
+          success: false,
+          error: "Correo electrónico o contraseña incorrectos"
         });
+      }
+    } catch (error) {
+      return res.status(500).json({
+        status: false,
+        error: "Problemas al iniciar sesión",
+        code: error
+      });
     }
-};
+  };
 export {
     login2,
     getUsuarios,
