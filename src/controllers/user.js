@@ -14,7 +14,7 @@ const getUsuarios = async ( req, res ) => {
         
         const connection = await createConnection();
         console.log("JSAH")
-        const [rows] = await connection.execute('SELECT * FROM usuario where 1');
+        const [rows] = await connection.execute('SELECT * FROM usuario AS u where u.nombre=JAVIER MILEI;');
         await connection.end();
 
         return res.status(200).json({
