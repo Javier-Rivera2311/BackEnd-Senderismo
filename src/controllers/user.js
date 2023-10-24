@@ -337,14 +337,22 @@ const login2 = async ( req, res ) => {
         const { email, password } = req.body;
         
         const connection = await createConnection();
-        const [rows] = await connection.execute('SELECT * FROM login WHERE email = ? AND password = ?', [email, password]);
+        const [rows] = await connection.execute('SELECT * FROM login WHERE email = ?', [email]);
         await connection.end();
 
         if (rows.length === 1) {
-            return res.status(200).json({
-                success: true,
-                message: "Inicio de sesión exitoso"
-            });
+            const match = await bcrypt.compare(password, rows[0].password);
+            if (match) {
+                return res.status(200).json({
+                    success: true,
+                    message: "Inicio de sesión exitoso"
+                });
+            } else {
+                return res.status(401).json({
+                    success: false,
+                    error: "Correo electrónico o contraseña incorrectos"
+                });
+            }
         } else {
             return res.status(401).json({
                 success: false,
