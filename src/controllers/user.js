@@ -95,7 +95,7 @@ const nombreYedad = async ( req, res ) => {
         
         const connection = await createConnection();
         console.log("JSAH")
-        const [rows] = await connection.execute('SELECT U.nombre, U.edad FROM usuario U JOIN comentario C ON U.ID = C.ID JOIN ruta R ON C.ID_ruta = R.ID_ruta WHERE R.tipo_ruta = montañosa');
+        const [rows] = await connection.execute('SELECT U.name, U.edad FROM login U JOIN comentario C ON U.ID = C.ID_comentario JOIN ruta R ON C.ID_comentario = R.ID_descripcion WHERE R.tipo_ruta = "montanosa";');
         await connection.end();
 
         return res.status(200).json({
@@ -119,7 +119,7 @@ const guias = async ( req, res ) => {
         
         const connection = await createConnection();
         console.log("JSAH")
-        const [rows] = await connection.execute('SELECT G.nombre, AVG(CAST(G.valoracion AS DECIMAL)) AS valoracion_promedio FROM guia G JOIN ruta R ON G.ID = R.ID_guia WHERE R.tipo_ruta = montañosa GROUP BY G.nombre HAVING AVG(CAST(G.valoracion AS DECIMAL)) > 4;');
+        const [rows] = await connection.execute('SELECT G.nombre, AVG(CAST(G.valoracion AS DECIMAL)) AS valoracion_promedio FROM guia G JOIN ruta R ON G.ID = R.ID_guia WHERE R.tipo_ruta = "montanosa" GROUP BY G.nombre HAVING AVG(CAST(G.valoracion AS DECIMAL)) > 4;');
         await connection.end();
         
         
@@ -131,7 +131,7 @@ const guias = async ( req, res ) => {
     } catch (error) {
         return res.status(500).json({
             status: false,
-            error: "Problemas al traer los guías que han recibido una valoración promedio superior a 4 en rutas montañosas",
+            error: "Problemas al traer los guías que han recibido una valoración promedio superior a 4 en rutas montanosas",
             code: error
         });
     }
@@ -264,7 +264,7 @@ const promedioEdadMontañosas = async ( req, res ) => {
         
         const connection = await createConnection();
         console.log("JSAH")
-        const [rows] = await connection.execute('SELECT AVG(U.edad) AS edad_promedio FROM usuario U JOIN comentario C ON U.ID = C.ID JOIN ruta R ON C.ID_ruta = R.ID_ruta WHERE R.tipo_ruta = montañosa;');
+        const [rows] = await connection.execute('SELECT AVG(U.edad) AS edad_promedio FROM usuario U JOIN comentario C ON U.ID = C.ID_comentario JOIN ruta R ON C.ID_ruta = R.ID_ruta WHERE R.tipo_ruta = "montanosa";');
         await connection.end();
         
         
@@ -276,7 +276,7 @@ const promedioEdadMontañosas = async ( req, res ) => {
     } catch (error) {
         return res.status(500).json({
             status: false,
-            error: "Problemas al obtener el promedio de edad de los usuarios que han dejado comentarios en rutas montañosas",
+            error: "Problemas al obtener el promedio de edad de los usuarios que han dejado comentarios en rutas montanosas",
             code: error
         });
     }
@@ -289,7 +289,7 @@ const rutasMontañosas2Comentarios = async ( req, res ) => {
         
         const connection = await createConnection();
         console.log("JSAH")
-        const [rows] = await connection.execute('SELECT R.ID_ruta, AVG(CAST(G.valoracion AS DECIMAL)) AS valoracion_promedio FROM ruta R JOIN guia G ON R.ID_guia = G.ID JOIN comentario C ON R.ID_ruta = C.ID_ruta WHERE R.tipo_ruta = montañosa GROUP BY R.ID_ruta HAVING COUNT(C.ID) >= 2;');
+        const [rows] = await connection.execute('SELECT R.ID_ruta, AVG(CAST(G.valoracion AS DECIMAL)) AS valoracion_promedio FROM ruta R JOIN guia G ON R.ID_guia = G.ID JOIN comentario C ON R.ID_ruta = C.ID_ruta WHERE R.tipo_ruta = "montanosa" GROUP BY R.ID_ruta HAVING COUNT(C.ID_comentario) >= 2;');
         await connection.end();
         
         

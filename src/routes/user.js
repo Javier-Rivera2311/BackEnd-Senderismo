@@ -13,8 +13,6 @@ router.route('/ingresar')
 router.route('/mostrar')
     .get(getUsuarios);
 
-router.route('/login')
-    .get(login);
 
 router.route('/login2')
     .post(login2);
@@ -22,16 +20,17 @@ router.route('/login2')
 router.route('/userSin')
     .get(usuariosSinComentarios);
 
-router.route('/erro1')
+
+router.route('/guias')
     .get(guias);
 
 router.route('/contrutas')
     .get(conteoRutas);
 
-router.route('error2')
-    .post(descripciones);
+router.route('/descripcion')
+    .get(descripciones);
 
-router.route('/error3')
+router.route('/nombreYedad')
     .get(nombreYedad);
 
 router.route('/antes2022rutas')
@@ -40,13 +39,13 @@ router.route('/antes2022rutas')
 router.route('/usuariosComentariosRurales')
     .get(usuariosComentariosRurales);
 
-router.route('/error4')
+router.route('/promedioEdadMontañosas')
     .get(promedioEdadMontañosas);
 
 router.route('/guiasSinRutasRurales')
     .get(guiasSinRutasRurales);
 
-router.route('/error5')
+router.route('/rutasMontañosas2Comentarios')
     .get(rutasMontañosas2Comentarios);
 
 
