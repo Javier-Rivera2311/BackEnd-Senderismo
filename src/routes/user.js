@@ -36,16 +36,16 @@ router.route('/nombreYedad')
 router.route('/antes2022rutas')
     .get(rutasAntes2022);
 
-router.route('/usuariosComentariosRurales')
+router.route('/error1')
     .get(usuariosComentariosRurales);
 
-router.route('/promedioEdadMontañosas')
+router.route('/promedioEdadMontanosas')
     .get(promedioEdadMontañosas);
 
 router.route('/guiasSinRutasRurales')
     .get(guiasSinRutasRurales);
 
-router.route('/rutasMontañosas2Comentarios')
+router.route('/rutasMontanosas2Comentarios')
     .get(rutasMontañosas2Comentarios);
 
 
