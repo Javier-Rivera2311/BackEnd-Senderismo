@@ -240,7 +240,7 @@ const guiasSinRutasRurales = async ( req, res ) => {
         
         const connection = await createConnection();
         console.log("JSAH")
-        const [rows] = await connection.execute('SELECT G.nombre FROM guia G LEFT JOIN ruta R ON G.ID = R.ID_guia WHERE R.ID_ruta IS NULL AND R.tipo_ruta = rural;');
+        const [rows] = await connection.execute('SELECT G.nombre FROM guia G LEFT JOIN ruta R ON G.ID = R.ID_guia WHERE R.ID_ruta IS NULL AND R.tipo_ruta = "rural";');
         await connection.end();
         
         
@@ -313,7 +313,7 @@ const usuariosComentariosRurales = async ( req, res ) => {
         
         const connection = await createConnection();
         console.log("JSAH")
-        const [rows] = await connection.execute('SELECT U.nombre FROM usuario U WHERE U.ID IN (SELECT ID_usuario FROM ruta WHERE tipo_ruta = rural) GROUP BY U.nombre HAVING COUNT(DISTINCT ID_ruta) = (SELECT COUNT(*) FROM ruta WHERE tipo_ruta = "rural");');
+        const [rows] = await connection.execute('SELECT U.nombre FROM usuario U WHERE U.ID IN (SELECT ID_usuario FROM comentario WHERE ID_ruta IN (SELECT ID_ruta FROM ruta WHERE tipo_ruta = "rural")) GROUP BY U.nombre HAVING COUNT(DISTINCT comentario.id_ruta) = (SELECT COUNT(*) FROM ruta WHERE tipo_ruta = "rural")');
         await connection.end();
         
         
