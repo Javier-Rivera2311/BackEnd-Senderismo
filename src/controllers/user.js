@@ -33,7 +33,23 @@ const getUsuarios = async ( req, res ) => {
 
 const setUsuario = async (req, res) => {
     try {
-      const { name, email, password } = req.body;
+      const { name, email, password, confirmPassword } = req.body;
+    // Validar que la contraseña cumpla con los requisitos
+    const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{6,}$/;
+    if (!passwordRegex.test(password)) {
+      return res.status(400).json({
+        success: false,
+        error: 'La contraseña debe tener al menos una mayúscula, una minúscula, un número, un carácter especial y ser de al menos 6 caracteres'
+      });
+    }      
+
+    // Verificar que las contraseñas coincidan
+    if (password !== confirmPassword) {
+        return res.status(400).json({
+          success: false,
+          error: 'Las contraseñas no coinciden'
+        });
+      }
   
       // Verificar si el correo electrónico ya existe en la base de datos
       const connection = await createConnection();
