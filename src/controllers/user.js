@@ -385,6 +385,38 @@ const login2 = async (req, res) => {
       });
     }
   };
+  const changePassword = async (req, res) => {
+    try {
+      const { email, newPassword } = req.body;
+  
+      const connection = await createConnection();
+      const [rows] = await connection.execute('SELECT * FROM login WHERE email = ?', [email]);
+  
+      if (rows.length === 1) {
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
+        await connection.execute('UPDATE login SET password = ? WHERE email = ?', [hashedPassword, email]);
+        await connection.end();
+  
+        return res.status(200).json({
+          success: true,
+          message: "Contraseña actualizada con éxito"
+        });
+      } else {
+        await connection.end();
+        return res.status(401).json({
+          success: false,
+          error: "Correo electrónico no encontrado"
+        });
+      }
+    } catch (error) {
+      return res.status(500).json({
+        status: false,
+        error: "Problemas al actualizar la contraseña",
+        code: error
+      });
+    }
+  };
+
 export {
     login2,
     getUsuarios,
@@ -399,4 +431,6 @@ export {
     guiasSinRutasRurales,
     promedioEdadMontañosas,
     rutasMontañosas2Comentarios,
-    usuariosComentariosRurales}
+    usuariosComentariosRurales,
+    changePassword
+}
