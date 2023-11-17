@@ -1,6 +1,7 @@
 import mysql2 from 'mysql2/promise';
 import connectionConfig from '../database/connection.js';
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 
 const createConnection = async ( ) => {
     return await mysql2.createConnection(connectionConfig);
@@ -361,9 +362,13 @@ const login2 = async (req, res) => {
         const passwordMatch = await bcrypt.compare(password, user.password);
   
         if (passwordMatch) {
+          // Genera un token de autenticación
+          const token = jwt.sign({ id: user.id }, 'secret-key', { expiresIn: '1h' });
+  
           return res.status(200).json({
             success: true,
-            message: "Inicio de sesión exitoso"
+            message: "Inicio de sesión exitoso",
+            token: token  // Envía el token al cliente
           });
         } else {
           return res.status(401).json({
