@@ -54,7 +54,7 @@ const setUsuario = async (req, res) => {
   
       // Verificar si el correo electrónico ya existe en la base de datos
       const connection = await createConnection();
-      const [rows] = await connection.execute('SELECT * FROM login WHERE email = ?', [email]);
+      const [rows] = await connection.execute('SELECT * FROM usuario WHERE email = ?', [email]);
       if (rows.length > 0) {
         await connection.end();
         return res.status(400).json({
@@ -67,7 +67,7 @@ const setUsuario = async (req, res) => {
       const hashedPassword = await bcrypt.hash(password, 10);
   
       // Insertar el nuevo registro en la base de datos
-      const [insertResult] = await connection.execute('INSERT INTO login (name, email, password) VALUES (?, ?, ?)', [name, email, hashedPassword]);
+      const [insertResult] = await connection.execute('INSERT INTO usuario (name, email, password) VALUES (?, ?, ?)', [name, email, hashedPassword]);
       await connection.end();
   
       return res.status(200).json({
@@ -354,7 +354,7 @@ const login2 = async (req, res) => {
       const { email, password } = req.body;
   
       const connection = await createConnection();
-      const [rows] = await connection.execute('SELECT * FROM login WHERE email = ?', [email]);
+      const [rows] = await connection.execute('SELECT * FROM usuario WHERE email = ?', [email]);
       await connection.end();
   
       if (rows.length === 1) {
@@ -395,7 +395,7 @@ const login2 = async (req, res) => {
       const { email, newPassword } = req.body;
   
       const connection = await createConnection();
-      const [rows] = await connection.execute('SELECT * FROM login WHERE email = ?', [email]);
+      const [rows] = await connection.execute('SELECT * FROM usuario WHERE email = ?', [email]);
   
       if (rows.length === 1) {
         const hashedPassword = await bcrypt.hash(newPassword, 10);
@@ -421,6 +421,36 @@ const login2 = async (req, res) => {
       });
     }
   };
+  const publicarRuta = async (req, res) => {
+    try {
+      const { nombre, ubicacion, dificultad, tipo_de_ruta, comentario } = req.body;
+  
+      // Validar que todos los campos necesarios estén presentes
+      if (!nombre || !ubicacion || !dificultad || !tipo_de_ruta || !comentario) {
+        return res.status(400).json({
+          success: false,
+          error: 'Todos los campos son requeridos'
+        });
+      }
+  
+      const connection = await createConnection();
+      // Insertar el nuevo registro en la base de datos
+      const [insertResult] = await connection.execute('INSERT INTO publicar_rutas (nombre, ubicacion, dificultad, tipo_de_ruta, comentario) VALUES (?, ?, ?, ?, ?)', [nombre, ubicacion, dificultad, tipo_de_ruta, comentario]);
+      await connection.end();
+  
+      return res.status(200).json({
+        success: true,
+        publicarRuta: insertResult
+      });
+  
+    } catch (error) {
+      return res.status(500).json({
+        status: false,
+        error: 'Problemas al ingresar la ruta',
+        code: error
+      });
+    }
+  };
 
 export {
     login2,
@@ -437,5 +467,6 @@ export {
     promedioEdadMontañosas,
     rutasMontañosas2Comentarios,
     usuariosComentariosRurales,
-    changePassword
+    changePassword,
+    publicarRuta
 }
