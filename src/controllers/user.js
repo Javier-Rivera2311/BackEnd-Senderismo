@@ -363,7 +363,7 @@ const login2 = async (req, res) => {
   
         if (passwordMatch) {
           // Genera un token de autenticación
-          const token = jwt.sign({ id: user.id }, 'secret-key', { expiresIn: '1h' });
+          const token = jwt.sign({ id: user.id }, 'secret-key', { expiresIn: '2h' });
   
           return res.status(200).json({
             success: true,
@@ -392,14 +392,14 @@ const login2 = async (req, res) => {
   };
   const changePassword = async (req, res) => {
     try {
-      const { email, newPassword } = req.body;
+      const { email, password } = req.body;
   
       const connection = await createConnection();
       const [rows] = await connection.execute('SELECT * FROM usuario WHERE email = ?', [email]);
   
       if (rows.length === 1) {
-        const hashedPassword = await bcrypt.hash(newPassword, 10);
-        await connection.execute('UPDATE login SET password = ? WHERE email = ?', [hashedPassword, email]);
+        const hashedPassword = await bcrypt.hash(password, 10);
+        await connection.execute('UPDATE usuario SET password = ? WHERE email = ?', [hashedPassword, email]);
         await connection.end();
   
         return res.status(200).json({
@@ -414,6 +414,7 @@ const login2 = async (req, res) => {
         });
       }
     } catch (error) {
+      console.log(error);
       return res.status(500).json({
         status: false,
         error: "Problemas al actualizar la contraseña",
