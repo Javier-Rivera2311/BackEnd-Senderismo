@@ -3,9 +3,10 @@ import cors from 'cors';
 import path from 'path';
 import morgan from 'morgan';
 import express from 'express';
-import value from './const/const.js';
+import value from './const/constNoSQL.js';
 //archivo de la confiraciaona de bd 
-import './database/connection.js'
+import './database/connection.js';
+import './database/connection-v3-mongoose.js';
 const app = express(); //crear instancia app
 
 
@@ -37,7 +38,7 @@ app.use(express.static(path.join(path.resolve(), value.STATIC_PATH)));
 
 
 //ENDPOINTs
-import routerUser from './routes/user.js';
+import routerUser from './routes/userSQL.js';
 //import routerRutas from './routes/rutas.js';
 
 /* `app.use('/user', routerUser)` is setting up a middleware for the Express.js application. It
