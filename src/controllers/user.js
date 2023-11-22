@@ -452,7 +452,50 @@ const login2 = async (req, res) => {
       });
     }
   };
-
+  const RealizarRuta = async (req, res) => {
+    try {
+      const { usuario, ubicaciones_agregadas, fecha, guia } = req.body;
+  
+      // Validar que todos los campos necesarios estén presentes
+      if (!usuario || !ubicaciones_agregadas || !fecha || !guia) {
+        return res.status(400).json({
+          success: false,
+          error: 'Todos los campos son requeridos'
+        });
+      }
+  
+      const connection = await createConnection();
+  
+      // Verificar si los IDs proporcionados existen en sus respectivas tablas
+      const [usuarioResult] = await connection.execute('SELECT * FROM usuario WHERE id = ?', [usuario]);
+      const [ubicacionesResult] = await connection.execute('SELECT * FROM publicar_rutas WHERE id = ?', [ubicaciones_agregadas]);
+      const [guiaResult] = await connection.execute('SELECT * FROM guia WHERE id = ?', [guia]);
+  
+      if (usuarioResult.length === 0 || ubicacionesResult.length === 0 || guiaResult.length === 0) {
+        await connection.end();
+        return res.status(400).json({
+          success: false,
+          error: 'Uno o más IDs proporcionados no existen'
+        });
+      }
+  
+      // Insertar el nuevo registro en la base de datos
+      const [insertResult] = await connection.execute('INSERT INTO ruta (usuario, ubicaciones_agregadas, fecha, guia) VALUES (?, ?, ?, ?)', [usuario, ubicaciones_agregadas, fecha, guia]);
+      await connection.end();
+  
+      return res.status(200).json({
+        success: true,
+        RealizarRuta: insertResult
+      });
+  
+    } catch (error) {
+      return res.status(500).json({
+        status: false,
+        error: 'Problemas al ingresar la ruta',
+        code: error
+      });
+    }
+  }
 export {
     login2,
     getUsuarios,
@@ -469,5 +512,6 @@ export {
     rutasMontañosas2Comentarios,
     usuariosComentariosRurales,
     changePassword,
-    publicarRuta
+    publicarRuta,
+    RealizarRuta
 }
