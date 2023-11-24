@@ -2,7 +2,7 @@
 defines two routes: */
 import { Router } from 'express';
 
-import {getUsuarios, setUsuario, changePassword, login2, nombreYedad,guias,descripciones,usuariosComentariosRurales,usuariosSinComentarios,rutasAntes2022,conteoRutas,promedioEdadMontañosas,guiasSinRutasRurales, rutasMontañosas2Comentarios, publicarRuta, RealizarRuta,} from '../controllers/sql/user.js';
+import { getUsuarios, setUsuario, login, login2, nombreYedad,guias,descripciones,usuariosComentariosRurales,usuariosSinComentarios,rutasAntes2022,conteoRutas,promedioEdadMontañosas,guiasSinRutasRurales, rutasMontañosas2Comentarios,} from '../controllers/user.js';
 
 
 const router = Router();
@@ -16,16 +16,6 @@ router.route('/mostrar')
 
 router.route('/login2')
     .post(login2);
-
-router.route('/publicarRuta')
-    .post(publicarRuta);
-
-router.route('/RealizarRuta')
-    .post(RealizarRuta);
-
-router.route('/changePassword')
-    .post(changePassword);
-
 
 router.route('/userSin')
     .get(usuariosSinComentarios);
@@ -46,17 +36,23 @@ router.route('/nombreYedad')
 router.route('/antes2022rutas')
     .get(rutasAntes2022);
 
-router.route('/error1')
+router.route('/usuariosComentariosRurales')
     .get(usuariosComentariosRurales);
 
-router.route('/promedioEdadMontanosas')
+router.route('/promedioEdadMontañosas')
     .get(promedioEdadMontañosas);
 
 router.route('/guiasSinRutasRurales')
     .get(guiasSinRutasRurales);
 
-router.route('/rutasMontanosas2Comentarios')
+router.route('/rutasMontañosas2Comentarios')
     .get(rutasMontañosas2Comentarios);
 
 
 export default router;
+
+
+
+
+
+
