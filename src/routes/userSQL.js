@@ -2,7 +2,7 @@
 defines two routes: */
 import { Router } from 'express';
 
-import {getUsuarios, setUsuario, changePassword, login2, nombreYedad,guias,descripciones,usuariosComentariosRurales,usuariosSinComentarios,rutasAntes2022,conteoRutas,promedioEdadMontañosas,guiasSinRutasRurales, rutasMontañosas2Comentarios, publicarRuta, RealizarRuta} from '../controllers/sql/user.js';
+import {getUsuarios, setUsuario, changePassword, login2, nombreYedad,guias,descripciones,usuariosComentariosRurales,usuariosSinComentarios,rutasAntes2022,conteoRutas,promedioEdadMontañosas,guiasSinRutasRurales, rutasMontañosas2Comentarios, publicarRuta, RealizarRuta,} from '../controllers/sql/user.js';
 
 
 const router = Router();
