@@ -1,37 +1,40 @@
-import mysql2 from 'mysql2';
-import values from '../const/const.js';
+import mysql2 from 'mysql2/promise'; // Importar la versión de promesa de mysql2 para uso de async/await
+import functionsCreate from './tablas.js';
 
-/* The `connectionConfig` object is storing the configuration details for connecting to a MySQL
-database. It includes the following properties: */
+import values from '../const/constSQL.js';
+
 const connectionConfig = {
     host: values.HOST,
     user: values.USER,
-    // password: 'Informatica2022.-',
-    database: values.DATABASE
+    database: values.DATABASE,
+    password: values.PASSWORD // Asegúrate de tener tu contraseña aquí
 };
-/* The code is creating a connection to a MySQL database using the `mysql2` library. */
 
-const connection = mysql2.createConnection({
+const connection = await mysql2.createConnection({
     host: connectionConfig.host,
     user: connectionConfig.user,
-    password: connectionConfig.password
+    password: connectionConfig.password,
 });
 
-/* The code `connection.query(`CREATE DATABASE IF NOT EXISTS ${connectionConfig.database}`, (error) =>
-{ ... })` is executing a SQL query to create a database if it does not already exist. */
-connection.query(`CREATE DATABASE IF NOT EXISTS ${connectionConfig.database}`, (error) => {
-    if (error) {
-      console.error('Error al crear la base de datos: ', error);
-      return;
-    }
-  
+// Usar la versión de promesa de mysql2
+const main = async () => {
+
+    await connection.query(`CREATE DATABASE IF NOT EXISTS ${connectionConfig.database}`);
     console.log('Base de datos creada o ya existente');
-  
-    // Conectar a la base de datos
-    connectionConfig.database = connectionConfig.database;
-  
-    // Cerrar la conexión temporal
-    connection.end();
+
+    await connection.query(`USE ${connectionConfig.database}`);
+    console.log(`Usando la base de datos ${connectionConfig.database}`);
+
+    // Aquí puedes llamar a tus funciones para crear las tablas.
+    await functionsCreate.crearTableCliente( connection );
+    await functionsCreate.crearTableProducto( connection );
+    await functionsCreate.crearTableCarrito( connection );
+    await functionsCreate.crearTableProductoEnCarrito( connection );
+};
+
+main().catch(err => {
+    console.error('Error:', err);
 });
 
-export default connectionConfig;
+
+export default connection;
