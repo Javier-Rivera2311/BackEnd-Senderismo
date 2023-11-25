@@ -293,7 +293,7 @@ const promedioEdadMontañosas = async ( req, res ) => {
     } catch (error) {
         return res.status(500).json({
             status: false,
-            error: "Problemas al obtener el promedio de edad de los usuarios que han dejado comentarios en rutas montanosas",
+            error: "Problemas al obtener el promedio de edad de los usuarios que han dejado comentarios en rutas montanosa",
             code: error
         });
     }
