@@ -363,7 +363,7 @@ const login2 = async (req, res) => {
   
         if (passwordMatch) {
           // Genera un token de autenticación
-          const token = jwt.sign({ id: user.id }, 'secret-key', { expiresIn: '1m' });
+          const token = jwt.sign({ id: user.id }, 'secret-key', { expiresIn: '2h' });
   
           return res.status(200).json({
             success: true,
