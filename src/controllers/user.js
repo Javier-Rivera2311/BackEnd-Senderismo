@@ -368,7 +368,9 @@ const login2 = async (req, res) => {
           return res.status(200).json({
             success: true,
             message: "Inicio de sesión exitoso",
-            token: token  // Envía el token al cliente
+            token: token,  // Envía el token al cliente
+            name: user.name,  // Envía el nombre del usuario al cliente
+            email: user.email  // Envía el correo electrónico del usuario al cliente
           });
         } else {
           return res.status(401).json({
