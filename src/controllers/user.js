@@ -7,10 +7,7 @@ const createConnection = async ( ) => {
     return await mysql2.createConnection(connectionConfig);
 }
 
-
-
-
-const getUsuarios = async ( req, res ) => {
+const getUsuarios = async ( req, res) => {
     try {
         
         const connection = await createConnection();

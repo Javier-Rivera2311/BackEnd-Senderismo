@@ -6,8 +6,8 @@ const SECRET = process.env.SECRET;
 const RUN_PORT = process.env.RUN_PORT;
 const NODE_ENV = process.env.NODE_ENV;
 const STATIC_PATH = process.env.STATIC_PATH;
-
-
+const URI_MONGO = process.env.URI_MONGO;
+const URI_MONGO1 = process.env.URI_MONGO1;
 // BD
 const HOST = process.env.HOST;
 const USER = process.env.USER;
@@ -23,6 +23,8 @@ const object = {
     NODE_ENV,
     DATABASE,
     RUN_PORT,
+    URI_MONGO,
+    URI_MONGO1 ,
     STATIC_PATH,
 }
 
