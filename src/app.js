@@ -39,12 +39,14 @@ app.use(express.static(path.join(path.resolve(), value.STATIC_PATH)));
 
 //ENDPOINTs
 import routerUser from './routes/user.js';
+import publicacionesRouter from './routes/Publicaciones.js';
 //import routerRutas from './routes/rutas.js';
 
 /* `app.use('/user', routerUser)` is setting up a middleware for the Express.js application. It
 specifies that any requests with a URL starting with '/user' should be handled by the `routerUser`
 router. */
 app.use('/user', routerUser);
+app.use('/Publicaciones', publicacionesRouter);
 //app.use('/rutas', routerRutas);
 
 export default app

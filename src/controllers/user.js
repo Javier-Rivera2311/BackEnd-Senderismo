@@ -7,15 +7,12 @@ const createConnection = async ( ) => {
     return await mysql2.createConnection(connectionConfig);
 }
 
-
-
-
-const getUsuarios = async ( req, res ) => {
+const getUsuarios = async ( req, res) => {
     try {
         
         const connection = await createConnection();
         console.log("JSAH")
-        const [rows] = await connection.execute('SELECT * FROM login where 1');
+        const [rows] = await connection.execute('SELECT * FROM usuario where 1');
         await connection.end();
 
         return res.status(200).json({
